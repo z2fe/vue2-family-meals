@@ -1,0 +1,36 @@
+{
+  "login": {
+    "code": 0,
+    "message": "ok"
+  },
+  "users": [{
+    "id": 1,
+    "username": "yecheng",
+    "password": "123456"
+  }],
+  "notes": [{
+    "id": 1,
+    "userId": 1,
+    "stockName": "雅戈尔",
+    "buyPrice": "15.00",
+    "buynumbers": 1000,
+    "pos": 0,
+    "remark": "高分红"
+  }, {
+    "id": 2,
+    "userId": 1,
+    "stockName": "海洋王",
+    "buyPrice": "24.90",
+    "buynumbers": 1000,
+    "pos": 0,
+    "remark": "重大资产重组"
+  }, {
+    "id": 3,
+    "userId": 1,
+    "stockName": "国投电力",
+    "buyPrice": "7.10",
+    "buynumbers": 1000,
+    "pos": 0,
+    "remark": "被举牌"
+  }]
+}
