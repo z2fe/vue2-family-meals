@@ -21,7 +21,8 @@ module.exports = {
   output: {
     path: resolve('dist'),
     publicPath: '/dist/',
-    filename: '[name].[chunkhash].js'
+    filename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].js'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -37,40 +38,32 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        use: [{
-          loader: 'vue-loader',
-          options: vueConfig
-        }]
+        loader: 'vue-loader',
+        options: vueConfig
       },
       {
         test: /\.js$/,
-        use: [{
-          loader: 'buble-loader',
-          options: {
-            objectAssign: 'Object.assign'
-          }
-        }],
+        loader: 'buble-loader',
+        options: {
+          objectAssign: 'Object.assign'
+        },
         exclude: /node_modules/
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        use: [{
-          loader: 'url-loader',
-          query: {
-            limit: 10000,
-            name: 'img/[name].[hash:7].[ext]'
-          }
-        }]
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'imgs/[name].[ext]?[hash:7]'
+        }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        use: [{
-          loader: 'url-loader',
-          query: {
-            limit: 10000,
-            name: 'fonts/[name].[hash:7].[ext]'
-          }
-        }]
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'fonts/[name].[ext]?[hash:7]'
+        }
       }
     ]
   },

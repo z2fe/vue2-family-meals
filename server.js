@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const compression = require('compression')
+const opn = require('opn')
 const serialize = require('serialize-javascript')
 const resolve = file => path.resolve(__dirname, file)
 
@@ -115,6 +116,8 @@ app.get('*', (req, res) => {
 })
 
 const port = process.env.PORT || 8080
+const uri = 'http://localhost:' + port
 app.listen(port, () => {
-  console.log(`server started at localhost:${port}`)
+  console.log(`server started at ${uri}\n`)
+  opn(uri)
 })

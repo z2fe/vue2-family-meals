@@ -3,6 +3,8 @@ const base = require('./webpack.base.config')
 const vueConfig = require('./vue-loader.config')
 const HTMLPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin')
+const WebpackChunkHash = require('webpack-chunk-hash')
 
 const config = Object.assign({}, base, {
   resolve: {
@@ -19,7 +21,14 @@ const config = Object.assign({}, base, {
     }),
     // extract vendor chunks for better caching
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
+      name: ['vendor', 'manifest'], // vendor libs + extracted manifest
+      minChunks: Infinity
+    }),
+    new webpack.HashedModuleIdsPlugin(),
+    new WebpackChunkHash(),
+    new ChunkManifestPlugin({
+      filename: 'chunk-manifest.json',
+      manifestVariable: 'webpackManifest'
     }),
     // generate output HTML
     new HTMLPlugin({
@@ -27,17 +36,22 @@ const config = Object.assign({}, base, {
     })
   ])
 })
-
 if (process.env.NODE_ENV === 'production') {
   // Use ExtractTextPlugin to extract CSS into a single file
   // so it's applied on initial render.
   // vueConfig is already included in the config via LoaderOptionsPlugin
-  // here we overwrite the loader config for <style lang="stylus">
-  // so they are extracted.
   vueConfig.loaders = {
     stylus: ExtractTextPlugin.extract({
-      loader: 'css-loader!stylus-loader',
+      use: ['css-loader', 'stylus-loader'],
       fallback: 'vue-style-loader' // <- this is a dep of vue-loader
+    }),
+    styl: ExtractTextPlugin.extract({
+      use: ['css-loader', 'stylus-loader'],
+      fallback: 'vue-style-loader' // <- this is a dep of vue-loader
+    }),
+    css: ExtractTextPlugin.extract({
+      use: 'css-loader',
+      fallback: 'vue-style-loader'
     })
   }
   config.plugins.push(
